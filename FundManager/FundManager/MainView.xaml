@@ -1,0 +1,31 @@
+﻿<Window x:Class="FundManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FundManager"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:FundManager.Models"
+        mc:Ignorable="d"
+        Title="Fund Manager" Height="350" Width="525">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="StockTypes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:StockType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <DockPanel>
+        <GroupBox Header="Add new stock">
+            <WrapPanel DockPanel.Dock="Top">
+                <Label>Stock type:</Label>
+                <ComboBox ItemsSource="{Binding Source={StaticResource StockTypes}}"
+                          SelectedItem="{Binding NewStockType}" />
+                <Button Content="Add"
+                        Command="{Binding AddStock}" />
+            </WrapPanel>
+        </GroupBox>
+    </DockPanel>
+</Window>
