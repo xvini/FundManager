@@ -2,19 +2,115 @@
 using Microsoft.Practices.Prism.Commands;
 using System.Windows.Input;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FundManager
 {
-    public class MainViewModel
+    public class MainViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
+        private float _newStockPrice;
+        private float _newStockQuantity;
+
         public ICommand AddStock { get; }
+        public string Error { get; } = null;
         public FundCollection Funds { get; } = new FundCollection();
+
+        public float NewStockPrice
+        {
+            get { return _newStockPrice; }
+            set
+            {
+                _newStockPrice = value;
+                OnNotifyPropertyChanged();
+            }
+        }
+
+        public float NewStockQuantity
+        {
+            get { return _newStockQuantity; }
+            set
+            {
+                _newStockQuantity = value;
+                OnNotifyPropertyChanged();
+            }
+        }
+
         public StockType NewStockType { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainViewModel()
         {
-            AddStock = new DelegateCommand(
-                () => Funds.Add(new Stock { Type = NewStockType }));
+            AddStock = GenerateAddStockCommand();
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(NewStockPrice):
+                        return ErrorForNewStockPrice();
+                    case nameof(NewStockQuantity):
+                        return ErrorForNewStockQuantity();
+                }
+                return null;
+            }
+        }
+
+        private bool CanAddStock() => string.IsNullOrEmpty(
+            this[nameof(NewStockPrice)] + this[nameof(NewStockQuantity)]);
+
+        private string ErrorForNewStockPrice()
+        {
+            if (NewStockPrice <= 0)
+            {
+                return "Stock price has to be greater than zero.";
+            }
+            return null;
+        }
+
+        private string ErrorForNewStockQuantity()
+        {
+            if (NewStockQuantity <= 0)
+            {
+                return "Stock quantity has to be greater than zero.";
+            }
+            return null;
+        }
+
+        private ICommand GenerateAddStockCommand()
+        {
+            var addStockCommand = new DelegateCommand(() =>
+                {
+                    Funds.Add(new Stock
+                    {
+                        Type = NewStockType,
+                        Price = NewStockPrice,
+                        Quantity = NewStockQuantity
+                    });
+                },
+                () => CanAddStock());
+
+            PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(NewStockPrice):
+                    case nameof(NewStockQuantity):
+                        addStockCommand.RaiseCanExecuteChanged();
+                        break;
+                }
+            };
+
+            return addStockCommand;
+        }
+
+        private void OnNotifyPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

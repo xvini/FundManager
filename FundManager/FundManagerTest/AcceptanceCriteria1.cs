@@ -70,7 +70,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelHasAddStockCommand()
+        public void Should_MainViewModelHaveAddStockCommand()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -83,7 +83,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelHasFunds()
+        public void Should_MainViewModelHaveFunds()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -96,7 +96,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelHasNewStockType()
+        public void Should_MainViewModelHaveNewStockType()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -109,13 +109,13 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockHaveBondType()
+        public void Should_StockHaveBondStockType()
         {
             new Stock().Type = StockType.Bond;
         }
 
         [TestMethod]
-        public void Should_StockHaveEquityType()
+        public void Should_StockHaveEquityStockType()
         {
             new Stock().Type = StockType.Equity;
         }

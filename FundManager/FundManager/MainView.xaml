@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:FundManager"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:FundManager.Models"
+        xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="Fund Manager" Height="350" Width="525">
+        Title="Fund Manager" Height="450" Width="600">
+    
     <Window.Resources>
         <ObjectDataProvider x:Key="StockTypes"
                             MethodName="GetValues"
@@ -16,14 +18,46 @@
                 <x:Type TypeName="models:StockType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <DataTemplate DataType="{x:Type ValidationError}">
+            <TextBlock Text="{Binding ErrorContent}"
+                       Foreground="Red"
+                       FontSize="10" />
+        </DataTemplate>
     </Window.Resources>
+    
     <DockPanel>
         <GroupBox Header="Add new stock">
             <WrapPanel DockPanel.Dock="Top">
-                <Label>Stock type:</Label>
-                <ComboBox ItemsSource="{Binding Source={StaticResource StockTypes}}"
-                          SelectedItem="{Binding NewStockType}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label>Stock type:</Label>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource StockTypes}}"
+                              SelectedItem="{Binding NewStockType}"
+                              Width="100" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Price:</Label>
+                    <DockPanel>
+                        <ContentPresenter Content="{Binding ElementName=StockPrice, Path=(Validation.Errors).CurrentItem}"
+                                          DockPanel.Dock="Bottom" />
+                        <wpfToolkit:DoubleUpDown Value="{Binding NewStockPrice, ValidatesOnDataErrors=True}"
+                                                 Name="StockPrice"
+                                                 FormatString="F2"
+                                                 Width="100" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Quantity:</Label>
+                    <DockPanel>
+                        <ContentPresenter Content="{Binding ElementName=StockQuantity, Path=(Validation.Errors).CurrentItem}"
+                                          DockPanel.Dock="Bottom" />
+                        <wpfToolkit:DoubleUpDown Value="{Binding NewStockQuantity, ValidatesOnDataErrors=True}"
+                                                 Name="StockQuantity"
+                                                 FormatString="F2"
+                                                 Width="100" />
+                    </DockPanel>
+                </StackPanel>
                 <Button Content="Add"
+                        Margin="10 0 0 0"
                         Command="{Binding AddStock}" />
             </WrapPanel>
         </GroupBox>
