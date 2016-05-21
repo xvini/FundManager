@@ -9,14 +9,14 @@ namespace FundManager
 {
     public class MainViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        private float _newStockPrice;
-        private float _newStockQuantity;
+        private double _newStockPrice = 1;
+        private double _newStockQuantity = 1;
 
         public ICommand AddStock { get; }
         public string Error { get; } = null;
         public FundCollection Funds { get; } = new FundCollection();
 
-        public float NewStockPrice
+        public double NewStockPrice
         {
             get { return _newStockPrice; }
             set
@@ -26,7 +26,7 @@ namespace FundManager
             }
         }
 
-        public float NewStockQuantity
+        public double NewStockQuantity
         {
             get { return _newStockQuantity; }
             set

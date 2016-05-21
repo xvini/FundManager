@@ -101,13 +101,13 @@ namespace FundManagerTest
         [TestMethod]
         public void Should_MainViewModelHaveNewStockPrice()
         {
-            float price = new MainViewModel().NewStockPrice;
+            double price = new MainViewModel().NewStockPrice;
         }
 
         [TestMethod]
         public void Should_MainViewModelHaveNewStockQuantity()
         {
-            float quantity = new MainViewModel().NewStockQuantity;
+            double quantity = new MainViewModel().NewStockQuantity;
         }
 
         [TestMethod]
@@ -216,13 +216,13 @@ namespace FundManagerTest
         [TestMethod]
         public void Should_StockHasPrice()
         {
-            float price = new Stock().Price;
+            double price = new Stock().Price;
         }
 
         [TestMethod]
         public void Should_StockHasQuantity()
         {
-            float quantity = new Stock().Quantity;
+            double quantity = new Stock().Quantity;
         }
     }
 }

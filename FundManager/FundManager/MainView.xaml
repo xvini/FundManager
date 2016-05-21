@@ -11,13 +11,6 @@
         Title="Fund Manager" Height="450" Width="600">
     
     <Window.Resources>
-        <ObjectDataProvider x:Key="StockTypes"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="models:StockType" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
         <DataTemplate DataType="{x:Type ValidationError}">
             <TextBlock Text="{Binding ErrorContent}"
                        Foreground="Red"
@@ -26,9 +19,19 @@
     </Window.Resources>
     
     <DockPanel>
-        <GroupBox Header="Add new stock">
-            <WrapPanel DockPanel.Dock="Top">
+        
+        <GroupBox Header="Add new stock" DockPanel.Dock="Top">
+            <WrapPanel>
                 <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <ObjectDataProvider x:Key="StockTypes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+                            <ObjectDataProvider.MethodParameters>
+                                <x:Type TypeName="models:StockType" />
+                            </ObjectDataProvider.MethodParameters>
+                        </ObjectDataProvider>
+                    </StackPanel.Resources>
                     <Label>Stock type:</Label>
                     <ComboBox ItemsSource="{Binding Source={StaticResource StockTypes}}"
                               SelectedItem="{Binding NewStockType}"
@@ -61,5 +64,35 @@
                         Command="{Binding AddStock}" />
             </WrapPanel>
         </GroupBox>
+
+        <GroupBox Header="My Funds">
+            <DataGrid ItemsSource="{Binding Funds}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Resources>
+                    <Style x:Key="DataGridNumberCell" TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Right" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Stock Type" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Stock Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Price"
+                                        Binding="{Binding Price, StringFormat=N2}"
+                                        ElementStyle="{StaticResource DataGridNumberCell}" />
+                    <DataGridTextColumn Header="Quantity"
+                                        Binding="{Binding Quantity, StringFormat=N2}"
+                                        ElementStyle="{StaticResource DataGridNumberCell}" />
+                    <DataGridTextColumn Header="Market Value"
+                                        Binding="{Binding MarketValue, StringFormat=N2}"
+                                        ElementStyle="{StaticResource DataGridNumberCell}" />
+                    <DataGridTextColumn Header="Transaction Cost"
+                                        Binding="{Binding TransactionCost, StringFormat=N2}"
+                                        ElementStyle="{StaticResource DataGridNumberCell}" />
+                    <DataGridTextColumn Header="Stock Weight"
+                                        Binding="{Binding Weight, StringFormat=N2}"
+                                        ElementStyle="{StaticResource DataGridNumberCell}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        
     </DockPanel>
 </Window>
