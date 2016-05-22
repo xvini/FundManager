@@ -39,6 +39,32 @@ namespace FundManagerTest
         }
 
         [TestMethod]
+        public void Should_BondStockHaveType()
+        {
+            // Arrange
+            var bond = new BondStock();
+
+            // Act
+            var type = bond.Type;
+
+            // Assert
+            Assert.AreEqual(StockType.Bond, type);
+        }
+
+        [TestMethod]
+        public void Should_EquityStockHaveType()
+        {
+            // Arrange
+            var equity = new EquityStock();
+
+            // Act
+            var type = equity.Type;
+
+            // Assert
+            Assert.AreEqual(StockType.Equity, type);
+        }
+
+        [TestMethod]
         public void Should_FundCollectionBeObervableCollectionOfStocks()
         {
             // Arrange
@@ -66,7 +92,17 @@ namespace FundManagerTest
         [TestMethod]
         public void Should_HaveStocks()
         {
-            var stock = new Stock();
+            // Arrange
+            var bond = new BondStock();
+            var equity = new EquityStock();
+
+            // Act
+            var isBondAStock = bond is Stock;
+            var isEquityAStock = equity is Stock;
+
+            // Assert
+            Assert.IsTrue(isBondAStock);
+            Assert.IsTrue(isEquityAStock);
         }
 
         [TestMethod]
@@ -106,18 +142,6 @@ namespace FundManagerTest
 
             // Assert
             Assert.IsTrue(stockType is StockType);
-        }
-
-        [TestMethod]
-        public void Should_StockHaveBondStockType()
-        {
-            new Stock().Type = StockType.Bond;
-        }
-
-        [TestMethod]
-        public void Should_StockHaveEquityStockType()
-        {
-            new Stock().Type = StockType.Equity;
         }
     }
 }

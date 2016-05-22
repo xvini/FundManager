@@ -104,6 +104,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Models\BondStock.cs" />
+    <Compile Include="Models\EquityStock.cs" />
     <Compile Include="Models\FundCollection.cs" />
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\StockType.cs" />

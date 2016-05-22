@@ -216,13 +216,15 @@ namespace FundManagerTest
         [TestMethod]
         public void Should_StockHasPrice()
         {
-            double price = new Stock().Price;
+            Stock stock = new BondStock();
+            double price = stock.Price;
         }
 
         [TestMethod]
         public void Should_StockHasQuantity()
         {
-            double quantity = new Stock().Quantity;
+            Stock stock = new BondStock();
+            double quantity = stock.Quantity;
         }
     }
 }

@@ -71,10 +71,19 @@
                     <Style x:Key="DataGridNumberCell" TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Right" />
                     </Style>
+                    <Style x:Key="DataGridHighlightCell" TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Highlight}" Value="True">
+                                <Setter Property="Background" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Stock Type" Binding="{Binding Type}" />
-                    <DataGridTextColumn Header="Stock Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Stock Name"
+                                        Binding="{Binding Name}"
+                                        ElementStyle="{StaticResource DataGridHighlightCell}" />
                     <DataGridTextColumn Header="Price"
                                         Binding="{Binding Price, StringFormat=N2}"
                                         ElementStyle="{StaticResource DataGridNumberCell}" />

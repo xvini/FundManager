@@ -85,12 +85,21 @@ namespace FundManager
         {
             var addStockCommand = new DelegateCommand(() =>
                 {
-                    Funds.Add(new Stock
+                    Stock stock = null;
+                    switch (NewStockType)
                     {
-                        Type = NewStockType,
-                        Price = NewStockPrice,
-                        Quantity = NewStockQuantity
-                    });
+                        case StockType.Bond:
+                            stock = new BondStock();
+                            break;
+                        case StockType.Equity:
+                            stock = new EquityStock();
+                            break;
+                        default:
+                            throw new Exception("Unknown stock type: " + NewStockType);
+                    }
+                    stock.Price = NewStockPrice;
+                    stock.Quantity = NewStockQuantity;
+                    Funds.Add(stock);
                 },
                 () => CanAddStock());
 

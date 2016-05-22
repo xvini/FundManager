@@ -5,31 +5,18 @@ using System.ComponentModel;
 
 namespace FundManager.Models
 {
-    public class Stock : INotifyPropertyChanged
+    public abstract class Stock : INotifyPropertyChanged
     {
-        private static readonly IReadOnlyDictionary<StockType, double> _costRatios =
-            new ReadOnlyDictionary<StockType, double>(new Dictionary<StockType, double>
-            {
-                [StockType.Bond] = 0.02,
-                [StockType.Equity] = 0.005
-            });
-
         public FundCollection Funds { get; set; }
+        public bool Highlight { get { return MarketValue < 0 || TransactionCost > Tolerance; } }
         public double MarketValue { get { return Price * Quantity; } }
         public string Name { get; set; }
         public double Price { get; set; }
+        public abstract double Ratio { get; }
         public double Quantity { get; set; }
-
-        public double TransactionCost
-        {
-            get
-            {
-                var ratio = _costRatios[Type];
-                return MarketValue * ratio;
-            }
-        }
-
-        public StockType Type { get; set; }
+        public double TransactionCost { get { return MarketValue * Ratio; } }
+        public abstract double Tolerance { get; }
+        public abstract StockType Type { get; }
 
         public double Weight
         {

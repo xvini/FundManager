@@ -16,7 +16,7 @@ namespace FundManagerTest
         public void Should_BeAbleToTriggerStockWeightPropertyNotification()
         {
             // Arrange
-            var stock = new Stock();
+            Stock stock = new BondStock();
 
             bool changed = false;
             stock.PropertyChanged += (sender, args) =>
@@ -35,10 +35,36 @@ namespace FundManagerTest
         }
 
         [TestMethod]
+        public void Should_BondStockCostRatioBeTwoPercentage()
+        {
+            // Arrange
+            Stock stock = new BondStock();
+
+            // Act
+            var ratio = stock.Ratio;
+
+            // Assert
+            Assert.AreEqual(0.02, ratio);
+        }
+
+        [TestMethod]
+        public void Should_EquityStockCostRatioBeHalfPercentage()
+        {
+            // Arrange
+            Stock stock = new EquityStock();
+
+            // Act
+            var ratio = stock.Ratio;
+
+            // Assert
+            Assert.AreEqual(0.005, ratio);
+        }
+
+        [TestMethod]
         public void Should_FundCollectionAddItselfToStock_When_StockIsAddedToFundCollection()
         {
             // Arrange
-            var stock = new Stock();
+            Stock stock = new BondStock();
             var funds = new FundCollection();
 
             // Act
@@ -52,8 +78,8 @@ namespace FundManagerTest
         public void Should_FundCollectionGivesStockName_When_BondIsAdded()
         {
             // Assert
-            var bond1 = new Stock { Type = StockType.Bond };
-            var bond2 = new Stock { Type = StockType.Bond };
+            var bond1 = new BondStock();
+            var bond2 = new BondStock();
 
             var funds = new FundCollection();
 
@@ -71,8 +97,8 @@ namespace FundManagerTest
         public void Should_FundCollectionGivesStockName_When_EquityIsAdded()
         {
             // Assert
-            var equity1 = new Stock { Type = StockType.Equity };
-            var equity2 = new Stock { Type = StockType.Equity };
+            var equity1 = new EquityStock();
+            var equity2 = new EquityStock();
 
             var funds = new FundCollection();
 
@@ -90,9 +116,9 @@ namespace FundManagerTest
         public void Should_FundCollectionHasTotalBondValue()
         {
             // Arrange
-            var bond1 = new Stock { Type = StockType.Bond, Price = 10, Quantity = 2 };
-            var bond2 = new Stock { Type = StockType.Bond, Price = 10, Quantity = 8 };
-            var equity = new Stock { Type = StockType.Equity, Price = 10, Quantity = 1 };
+            var bond1 = new BondStock { Price = 10, Quantity = 2 };
+            var bond2 = new BondStock { Price = 10, Quantity = 8 };
+            var equity = new EquityStock { Price = 10, Quantity = 1 };
 
             var funds = new FundCollection();
             funds.Add(bond1);
@@ -110,9 +136,9 @@ namespace FundManagerTest
         public void Should_FundCollectionHasTotalEquityValue()
         {
             // Arrange
-            var equity1 = new Stock { Type = StockType.Equity, Price = 10, Quantity = 8 };
-            var equity2 = new Stock { Type = StockType.Equity, Price = 10, Quantity = 2 };
-            var bond = new Stock { Type = StockType.Bond, Price = 10, Quantity = 1 };
+            var equity1 = new EquityStock { Price = 10, Quantity = 8 };
+            var equity2 = new EquityStock { Price = 10, Quantity = 2 };
+            var bond = new BondStock { Price = 10, Quantity = 1 };
 
             var funds = new FundCollection();
             funds.Add(equity1);
@@ -130,8 +156,8 @@ namespace FundManagerTest
         public void Should_FundCollectionNotifyStockAboutWeightChange_When_TheSameStockTypeWasAdded()
         {
             // Arrange
-            var bond = new Stock { Type = StockType.Bond };
-            var equity = new Stock { Type = StockType.Equity };
+            var bond = new BondStock();
+            var equity = new EquityStock();
 
             var funds = new FundCollection();
             funds.Add(bond);
@@ -144,7 +170,7 @@ namespace FundManagerTest
             equity.PropertyChanged += (s, a) => equityNotified = true;
 
             // Act
-            funds.Add(new Stock { Type = StockType.Bond });
+            funds.Add(new BondStock());
 
             // Assert
             Assert.IsTrue(bondNotified);
@@ -152,12 +178,11 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockCostBeHalfPercentageOfValue_When_ItIsEquityStock()
+        public void Should_StockCostBeRatioTimesValue()
         {
             // Arrange
-            var stock = new Stock
+            var stock = new BondStock
             {
-                Type = StockType.Equity,
                 Price = 45,
                 Quantity = 4
             };
@@ -166,84 +191,76 @@ namespace FundManagerTest
             var cost = stock.TransactionCost;
 
             // Assert
-            Assert.AreEqual(stock.MarketValue * 0.005, cost);
-        }
-
-        [TestMethod]
-        public void Should_StockCostBeTwoPercentagesOfValue_When_ItIsBondStock()
-        {
-            // Arrange
-            var stock = new Stock
-            {
-                Type = StockType.Bond,
-                Price = 45,
-                Quantity = 4
-            };
-
-            // Act
-            var cost = stock.TransactionCost;
-
-            // Assert
-            Assert.AreEqual(stock.MarketValue * 0.02, cost);
+            Assert.AreEqual(stock.MarketValue * stock.Ratio, cost);
         }
 
         [TestMethod]
         public void Should_StockHasName()
         {
-            string name = new Stock().Name;
+            Stock stock = new BondStock();
+            string name = stock.Name;
         }
 
         [TestMethod]
         public void Should_StockHasMarketValue()
         {
-            double value = new Stock().MarketValue;
+            Stock stock = new BondStock();
+            double value = stock.MarketValue;
         }
 
         [TestMethod]
         public void Should_StockHasTransactionCost()
         {
-            double cost = new Stock().TransactionCost;
+            Stock stock = new BondStock();
+            double cost = stock.TransactionCost;
         }
 
         [TestMethod]
         public void Should_StockHasWeight()
         {
-            double weight = new Stock().Weight;
+            Stock stock = new BondStock();
+            double weight = stock.Weight;
         }
 
         [TestMethod]
         public void Should_StockImplementINotifyPropertyChanged()
         {
             // Arrange
-            var stock = new Stock();
+            Stock stock1 = new BondStock();
+            Stock stock2 = new EquityStock();
 
             // Act
-            var iNotify = stock as INotifyPropertyChanged;
+            var iNotify1 = stock1 as INotifyPropertyChanged;
+            var iNotify2 = stock2 as INotifyPropertyChanged;
 
             // Assert
-            Assert.IsNotNull(iNotify);
+            Assert.IsNotNull(iNotify1);
+            Assert.IsNotNull(iNotify2);
         }
 
         [TestMethod]
         public void Should_StockMarketValueBeCalculatedFromPriceAndQuantity()
         {
             // Arrange
-            var stock = new Stock { Price = 10, Quantity = 3 };
+            var stock1 = new BondStock { Price = 10, Quantity = 3 };
+            var stock2 = new EquityStock { Price = 10, Quantity = 3 };
 
             // Act
-            var value = stock.MarketValue;
+            var value1 = stock1.MarketValue;
+            var value2 = stock2.MarketValue;
 
             // Assert
-            Assert.AreEqual(30, value);
+            Assert.AreEqual(30, value1);
+            Assert.AreEqual(30, value2);
         }
 
         [TestMethod]
         public void Should_StockWeightBeValuePercentageOfTotalStockTypeValue()
         {
             // Arrange
-            var bond = new Stock { Type = StockType.Bond, Price = 1, Quantity = 1 };
-            var equity1= new Stock { Type = StockType.Equity, Price = 1, Quantity = 99 };
-            var equity2 = new Stock { Type = StockType.Equity, Price = 1, Quantity = 1 };
+            var bond = new BondStock { Price = 1, Quantity = 1 };
+            var equity1= new EquityStock { Price = 1, Quantity = 99 };
+            var equity2 = new EquityStock { Price = 1, Quantity = 1 };
 
             var funds = new FundCollection();
             funds.Add(bond);
