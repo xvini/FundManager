@@ -6,13 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FundManagerTest
+namespace FundManagerTest.AcceptanceCriteria4
 {
     [TestClass]
-    public class AcceptanceCriteria4
+    public class StockTest
     {
         [TestMethod]
-        public void Should_HighlightStock_When_MarketValueIsNegative()
+        public void Should_HaveHighlightProperty()
+        {
+            Stock stock = new BondStock();
+            bool highlight = stock.Highlight;
+        }
+
+        [TestMethod]
+        public void Should_HaveTolerance()
+        {
+            Stock stock = new BondStock();
+            double tolerance = stock.Tolerance;
+        }
+
+        [TestMethod]
+        public void Should_Highlight_When_MarketValueIsNegative()
         {
             // Arrange
             var stock = new BondStock { Price = -1, Quantity = 1 };
@@ -26,7 +40,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_HighlightStock_When_TransactionCostHigherThanTolerance()
+        public void Should_Highlight_When_TransactionCostHigherThanTolerance()
         {
             // Arrange
             var stock = new BondStock();
@@ -42,7 +56,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_NotHighlightStock_When_IsANewStock()
+        public void Should_NotHighlight_When_IsANewStock()
         {
             // Arrange
             var stock = new BondStock();
@@ -55,21 +69,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockHaveHighlightProperty()
-        {
-            Stock stock = new BondStock();
-            bool highlight = stock.Highlight;
-        }
-
-        [TestMethod]
-        public void Should_StockHaveTolerance()
-        {
-            Stock stock = new BondStock();
-            double tolerance = stock.Tolerance;
-        }
-
-        [TestMethod]
-        public void Should_StockToleranceIs100000_When_StockIsBond()
+        public void Should_ToleranceBe100000_When_StockIsBond()
         {
             // Arrange
             var bond = new BondStock();
@@ -82,7 +82,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockToleranceIs200000_When_StockIsEquity()
+        public void Should_ToleranceBe200000_When_StockIsEquity()
         {
             // Arrange
             var equity = new EquityStock();

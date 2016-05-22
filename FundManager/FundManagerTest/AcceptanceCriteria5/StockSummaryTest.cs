@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FundManagerTest
+namespace FundManagerTest.AcceptanceCriteria5
 {
     [TestClass]
-    public class AcceptanceCriteria5
+    public class StockSummaryTest
     {
         [TestMethod]
-        public void Should_CalculateStockSummaryWeight_When_TotalStockSummaryProvided()
+        public void Should_CalculateWeight_When_TotalStockSummaryProvided()
         {
             // Arrange
             var totalSummary = new StockSummary { TotalValue = 100 };
@@ -27,77 +27,13 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_FundCollectionCreateStockSummaryWithTotalSummaryProvided()
-        {
-            // Arrange
-            var funds = new FundCollection();
-
-            // Act
-            var bondSummary = funds.BondSummary;
-            var equitySummary = funds.EquitySummary;
-
-            // Assert
-            Assert.AreEqual(funds.TotalSummary, bondSummary.TotalSummary);
-            Assert.AreEqual(funds.TotalSummary, equitySummary.TotalSummary);
-        }
-
-        [TestMethod]
-        public void Should_FundCollectionHaveBondSummary()
-        {
-            // Arrange
-            var funds = new FundCollection();
-            funds.Add(new BondStock { Price = 1, Quantity = 1 });
-
-            // Act
-            StockSummary summary = funds.BondSummary;
-
-            // Assert
-            Assert.IsNotNull(summary);
-            Assert.AreEqual(1, summary.Count);
-            Assert.AreEqual(1, summary.TotalValue);
-        }
-
-        [TestMethod]
-        public void Should_FundCollectionHaveEquitySummary()
-        {
-            // Arrange
-            var funds = new FundCollection();
-            funds.Add(new EquityStock { Price = 1, Quantity = 1 });
-
-            // Act
-            StockSummary summary = funds.EquitySummary;
-
-            // Assert
-            Assert.IsNotNull(summary);
-            Assert.AreEqual(1, summary.Count);
-            Assert.AreEqual(1, summary.TotalValue);
-        }
-
-        [TestMethod]
-        public void Should_FundCollectionHaveTotalSummary()
-        {
-            // Arrange
-            var funds = new FundCollection();
-            funds.Add(new BondStock { Price = 10, Quantity = 1 });
-            funds.Add(new EquityStock { Price = 10, Quantity = 1 });
-
-            // Act
-            StockSummary summary = funds.TotalSummary;
-
-            // Assert
-            Assert.IsNotNull(summary);
-            Assert.AreEqual(2, summary.Count);
-            Assert.AreEqual(20, summary.TotalValue);
-        }
-
-        [TestMethod]
-        public void Should_StackSummaryHaveWeightProperty()
+        public void Should_HaveWeightProperty()
         {
             double weight = new StockSummary().TotalWeight;
         }
 
         [TestMethod]
-        public void Should_StockSummaryImplementINotifyPropertyChanged()
+        public void Should_ImplementINotifyPropertyChanged()
         {
             // Arrange
             var summary = new StockSummary();
@@ -110,7 +46,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryPresentTotalSummary()
+        public void Should_PresentTotalSummary()
         {
             // Arrange
             var totalSummary = new StockSummary();
@@ -124,7 +60,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryNotify_When_CountChanged()
+        public void Should_Notify_When_CountChanged()
         {
             // Arrange
             var summary = new StockSummary();
@@ -146,7 +82,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryNotify_When_TotalValueChanged()
+        public void Should_Notify_When_TotalValueChanged()
         {
             // Arrange
             var summary = new StockSummary();
@@ -168,7 +104,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryNotifyWeightChanged_When_TotalSummaryValueChanged()
+        public void Should_NotifyWeightChanged_When_TotalSummaryValueChanged()
         {
             // Arrange
             var totalSummary = new StockSummary();
@@ -191,7 +127,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryNotifyWeightChanged_When_TotalValueChanged()
+        public void Should_NotifyWeightChanged_When_TotalValueChanged()
         {
             // Arrange
             var summary = new StockSummary();
@@ -213,7 +149,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryWeightBeAHundredPercentages_When_NoTotalSummaryProvided()
+        public void Should_WeightBeAHundredPercentages_When_NoTotalSummaryProvided()
         {
             // Arrange
             var summary = new StockSummary();
@@ -226,7 +162,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockSummaryWeightBeZero_When_TotalSummaryValueIsZero()
+        public void Should_WeightBeZero_When_TotalSummaryValueIsZero()
         {
             // Arrange
             var totalSummary = new StockSummary { TotalValue = 0 };

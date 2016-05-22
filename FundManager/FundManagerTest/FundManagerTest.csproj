@@ -52,11 +52,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AcceptanceCriteria1.cs" />
-    <Compile Include="AcceptanceCriteria2.cs" />
-    <Compile Include="AcceptanceCriteria3.cs" />
-    <Compile Include="AcceptanceCriteria4.cs" />
-    <Compile Include="AcceptanceCriteria5.cs" />
+    <Compile Include="AcceptanceCriteria1\FundCollectionTest.cs" />
+    <Compile Include="AcceptanceCriteria1\MainViewModelTest.cs" />
+    <Compile Include="AcceptanceCriteria1\StockTest.cs" />
+    <Compile Include="AcceptanceCriteria2\MainViewModelTest.cs" />
+    <Compile Include="AcceptanceCriteria2\StockTest.cs" />
+    <Compile Include="AcceptanceCriteria3\FundCollectionTest.cs" />
+    <Compile Include="AcceptanceCriteria3\StockTest.cs" />
+    <Compile Include="AcceptanceCriteria4\StockTest.cs" />
+    <Compile Include="AcceptanceCriteria5\FundCollectionTest.cs" />
+    <Compile Include="AcceptanceCriteria5\StockSummaryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

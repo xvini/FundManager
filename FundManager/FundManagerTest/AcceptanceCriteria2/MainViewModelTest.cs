@@ -1,31 +1,19 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using FundManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FundManager;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using FundManager.Models;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FundManagerTest
+namespace FundManagerTest.AcceptanceCriteria2
 {
     [TestClass]
-    public class AcceptanceCriteria2
+    public class MainViewModelTest
     {
         [TestMethod]
-        public void Should_MainViewModelImplementINotifyPropertyChanged()
-        {
-            // Arrange
-            var vm = new MainViewModel();
-
-            // Act
-            var iNotify = vm as INotifyPropertyChanged;
-
-            // Assert
-            Assert.IsNotNull(iNotify);
-        }
-
-        [TestMethod]
-        public void Should_MainViewModelCallNotifyProperty_When_StockPriceChanges()
+        public void Should_CallNotifyProperty_When_StockPriceChanged()
         {
             // Assert
             var vm = new MainViewModel();
@@ -47,7 +35,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelCallNotifyProperty_When_StockQuantityChanges()
+        public void Should_CallNotifyProperty_When_StockQuantityChanged()
         {
             // Assert
             var vm = new MainViewModel();
@@ -69,7 +57,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelForbidToAddStock_When_OnlyStockPriceIsWrong()
+        public void Should_ForbidToAddStock_When_OnlyStockPriceIsWrong()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -84,7 +72,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelForbidToAddStock_When_OnlyStockQuantityIsWrong()
+        public void Should_ForbidToAddStock_When_OnlyStockQuantityIsWrong()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -99,19 +87,32 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelHaveNewStockPrice()
+        public void Should_HaveNewStockPriceProperty()
         {
             double price = new MainViewModel().NewStockPrice;
         }
 
         [TestMethod]
-        public void Should_MainViewModelHaveNewStockQuantity()
+        public void Should_HaveNewStockQuantityProperty()
         {
             double quantity = new MainViewModel().NewStockQuantity;
         }
 
         [TestMethod]
-        public void Should_MainViewModelReportError_When_NewStockPriceIsNegative()
+        public void Should_ImplementINotifyPropertyChanged()
+        {
+            // Arrange
+            var vm = new MainViewModel();
+
+            // Act
+            var iNotify = vm as INotifyPropertyChanged;
+
+            // Assert
+            Assert.IsNotNull(iNotify);
+        }
+
+        [TestMethod]
+        public void Should_ReportError_When_NewStockPriceIsNegative()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -125,7 +126,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelReportError_When_NewStockPriceIsZero()
+        public void Should_ReportError_When_NewStockPriceIsZero()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -139,7 +140,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelReportError_When_NewStockQuantityIsNegative()
+        public void Should_ReportError_When_NewStockQuantityIsNegative()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -153,7 +154,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelReportError_When_NewStockQuantityIsZero()
+        public void Should_ReportError_When_NewStockQuantityIsZero()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -167,7 +168,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelSetPrice_When_AddsStock()
+        public void Should_SetPrice_When_AddStock()
         {
             // Arrange
             const float ExpectedPrice = 15;
@@ -184,7 +185,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelSetQuantity_When_AddsStock()
+        public void Should_SetQuantity_When_AddStock()
         {
             // Arrange
             const float ExpectedQuantity = 20;
@@ -201,7 +202,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_MainViewModelSupportIDataErrorInfo()
+        public void Should_SupportIDataErrorInfo()
         {
             // Arrange
             var vm = new MainViewModel();
@@ -211,20 +212,6 @@ namespace FundManagerTest
 
             // Assert
             Assert.IsNotNull(errorInfo);
-        }
-
-        [TestMethod]
-        public void Should_StockHasPrice()
-        {
-            Stock stock = new BondStock();
-            double price = stock.Price;
-        }
-
-        [TestMethod]
-        public void Should_StockHasQuantity()
-        {
-            Stock stock = new BondStock();
-            double quantity = stock.Quantity;
         }
     }
 }
