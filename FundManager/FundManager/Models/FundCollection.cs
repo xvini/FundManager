@@ -9,14 +9,11 @@ namespace FundManager.Models
 {
     public class FundCollection : ObservableCollection<Stock>
     {
-        private class StockSummary
-        {
-            public int Count { get; set; }
-            public double TotalValue { get; set; }
-        }
-
         private IDictionary<StockType, StockSummary> _stockRegistry = new Dictionary<StockType, StockSummary>();
 
+        public StockSummary BondSummary { get { return GetSummary(StockType.Bond); } }
+        public StockSummary EquitySummary { get { return GetSummary(StockType.Equity); } }
+        public StockSummary TotalSummary { get; set; } = new StockSummary();
         public double TotalValue { get { return _stockRegistry.Values.Select(s => s.TotalValue).Sum(); } }
 
         public FundCollection()
@@ -26,7 +23,7 @@ namespace FundManager.Models
 
         public double GetTotalValue(StockType type)
         {
-            return GetRegistry(type)?.TotalValue ?? 0;
+            return GetSummary(type)?.TotalValue ?? 0;
         }
 
         private void FundCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -37,18 +34,11 @@ namespace FundManager.Models
             }
         }
 
-        private StockSummary GetRegistry(StockType type)
-        {
-            return _stockRegistry.Keys.Contains(type)
-                ? _stockRegistry[type]
-                : null;
-        }
-
         private StockSummary GetSummary(StockType type)
         {
             if (!_stockRegistry.Keys.Contains(type))
             {
-                _stockRegistry.Add(type, new StockSummary());
+                _stockRegistry.Add(type, new StockSummary(TotalSummary));
             }
 
             return _stockRegistry[type];
@@ -69,10 +59,10 @@ namespace FundManager.Models
         {
             var summary = GetSummary(stock.Type);
 
-            summary.TotalValue += stock.MarketValue;
-            int id = ++summary.Count;
+            UpdateSummary(summary, stock);
+            UpdateSummary(TotalSummary, stock);
 
-            stock.Name = stock.Type.ToString() + id;
+            stock.Name = stock.Type.ToString() + summary.Count;
             stock.Funds = this;
 
             NotifyStocks(stock);
@@ -88,6 +78,12 @@ namespace FundManager.Models
                     Register(stock);
                 }
             }
+        }
+
+        private static void UpdateSummary(StockSummary summary, Stock stock)
+        {
+            summary.TotalValue += stock.MarketValue;
+            summary.Count++;
         }
     }
 }

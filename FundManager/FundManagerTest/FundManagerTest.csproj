@@ -56,6 +56,7 @@
     <Compile Include="AcceptanceCriteria2.cs" />
     <Compile Include="AcceptanceCriteria3.cs" />
     <Compile Include="AcceptanceCriteria4.cs" />
+    <Compile Include="AcceptanceCriteria5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

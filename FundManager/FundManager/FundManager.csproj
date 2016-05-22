@@ -108,6 +108,7 @@
     <Compile Include="Models\EquityStock.cs" />
     <Compile Include="Models\FundCollection.cs" />
     <Compile Include="Models\Stock.cs" />
+    <Compile Include="Models\StockSummary.cs" />
     <Compile Include="Models\StockType.cs" />
     <Page Include="MainView.xaml">
       <Generator>MSBuild:Compile</Generator>

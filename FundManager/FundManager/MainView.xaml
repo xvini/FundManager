@@ -8,13 +8,44 @@
         xmlns:models="clr-namespace:FundManager.Models"
         xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="Fund Manager" Height="450" Width="600">
+        Title="Fund Manager" Height="500" Width="800">
     
     <Window.Resources>
         <DataTemplate DataType="{x:Type ValidationError}">
             <TextBlock Text="{Binding ErrorContent}"
                        Foreground="Red"
                        FontSize="10" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:StockSummary}">
+            <Grid>
+                <Grid.Resources>
+                    <Style x:Key="NumberTextBox" TargetType="TextBox">
+                        <Setter Property="TextAlignment" Value="Right" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label>Total Number:</Label>
+                <TextBox Grid.Column="1"
+                         Text="{Binding Count}"
+                         Style="{StaticResource NumberTextBox}" />
+                <Label Grid.Row="1">Total Stock Weight:</Label>
+                <TextBox Grid.Row="1" Grid.Column="1"
+                         Text="{Binding TotalWeight, StringFormat=N2, Mode=OneWay}"
+                         Style="{StaticResource NumberTextBox}" />
+                <Label Grid.Row="2">Total Market Value:</Label>
+                <TextBox Grid.Row="2" Grid.Column="1"
+                         Text="{Binding TotalValue, StringFormat=N2}"
+                         Style="{StaticResource NumberTextBox}" />
+            </Grid>
         </DataTemplate>
     </Window.Resources>
     
@@ -25,8 +56,8 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <ObjectDataProvider x:Key="StockTypes"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type System:Enum}">
+                                            MethodName="GetValues"
+                                            ObjectType="{x:Type System:Enum}">
                             <ObjectDataProvider.MethodParameters>
                                 <x:Type TypeName="models:StockType" />
                             </ObjectDataProvider.MethodParameters>
@@ -65,7 +96,27 @@
             </WrapPanel>
         </GroupBox>
 
-        <GroupBox Header="My Funds">
+        <GroupBox Header="Summary" DockPanel.Dock="Right">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="Bond">
+                    <ContentPresenter Content="{Binding Funds.BondSummary}" />
+                </GroupBox>
+                <GroupBox Header="Equity" Grid.Row="1">
+                    <ContentPresenter Content="{Binding Funds.EquitySummary}" />
+                </GroupBox>
+                <GroupBox Header="All" Grid.Row="3">
+                    <ContentPresenter Content="{Binding Funds.TotalSummary}" />
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Funds">
             <DataGrid ItemsSource="{Binding Funds}" IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Resources>
                     <Style x:Key="DataGridNumberCell" TargetType="TextBlock">
