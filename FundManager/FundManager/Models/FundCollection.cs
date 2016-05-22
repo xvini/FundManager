@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace FundManager.Models
 {
@@ -15,6 +16,8 @@ namespace FundManager.Models
         }
 
         private IDictionary<StockType, StockSummary> _stockRegistry = new Dictionary<StockType, StockSummary>();
+
+        public double TotalValue { get { return _stockRegistry.Values.Select(s => s.TotalValue).Sum(); } }
 
         public FundCollection()
         {
@@ -51,11 +54,11 @@ namespace FundManager.Models
             return _stockRegistry[type];
         }
 
-        private void NotifyStocksOfTheSameType(Stock stock)
+        private void NotifyStocks(Stock stock)
         {
             foreach(var s in this)
             {
-                if (s.Type == stock.Type && s != stock)
+                if (s != stock)
                 {
                     s.TriggerWeightNotification();
                 }
@@ -72,7 +75,7 @@ namespace FundManager.Models
             stock.Name = stock.Type.ToString() + id;
             stock.Funds = this;
 
-            NotifyStocksOfTheSameType(stock);
+            NotifyStocks(stock);
         }
 
         private void RegisterStocks(IList newItems)

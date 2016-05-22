@@ -27,7 +27,7 @@ namespace FundManager.Models
                     return 0;
                 }
 
-                var total = Funds.GetTotalValue(Type);
+                var total = Funds.TotalValue;
                 if (total == 0)
                 {
                     return 0;

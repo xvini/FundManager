@@ -113,7 +113,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_FundCollectionHasTotalBondValue()
+        public void Should_FundCollectionHaveTotalBondValue()
         {
             // Arrange
             var bond1 = new BondStock { Price = 10, Quantity = 2 };
@@ -133,7 +133,7 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_FundCollectionHasTotalEquityValue()
+        public void Should_FundCollectionHaveTotalEquityValue()
         {
             // Arrange
             var equity1 = new EquityStock { Price = 10, Quantity = 8 };
@@ -153,7 +153,25 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_FundCollectionNotifyStockAboutWeightChange_When_TheSameStockTypeWasAdded()
+        public void Should_FundCollectionHaveTotalValue()
+        {
+            // Arrange
+            var bond = new BondStock { Price = 100, Quantity = 1 };
+            var equity = new EquityStock { Price = 100, Quantity = 1 };
+
+            var funds = new FundCollection();
+            funds.Add(bond);
+            funds.Add(equity);
+
+            // Act
+            double totalValue = funds.TotalValue;
+
+            // Assert
+            Assert.AreEqual(200, totalValue);
+        }
+
+        [TestMethod]
+        public void Should_FundCollectionNotifyStocksAboutWeightChange_When_NewStockIsAdded()
         {
             // Arrange
             var bond = new BondStock();
@@ -174,7 +192,7 @@ namespace FundManagerTest
 
             // Assert
             Assert.IsTrue(bondNotified);
-            Assert.IsFalse(equityNotified);
+            Assert.IsTrue(equityNotified);
         }
 
         [TestMethod]
@@ -255,27 +273,23 @@ namespace FundManagerTest
         }
 
         [TestMethod]
-        public void Should_StockWeightBeValuePercentageOfTotalStockTypeValue()
+        public void Should_StockWeightBeValuePercentageOfTotalStockValue()
         {
             // Arrange
             var bond = new BondStock { Price = 1, Quantity = 1 };
-            var equity1= new EquityStock { Price = 1, Quantity = 99 };
-            var equity2 = new EquityStock { Price = 1, Quantity = 1 };
+            var equity= new EquityStock { Price = 1, Quantity = 99 };
 
             var funds = new FundCollection();
             funds.Add(bond);
-            funds.Add(equity1);
-            funds.Add(equity2);
+            funds.Add(equity);
 
             // Act
             var bondWeight = bond.Weight;
-            var equity1Weight = equity1.Weight;
-            var equity2Weight = equity2.Weight;
+            var equityWeight = equity.Weight;
 
             // Assert
-            Assert.AreEqual(100, bondWeight);
-            Assert.AreEqual(99, equity1Weight);
-            Assert.AreEqual(1, equity2Weight);
+            Assert.AreEqual(1, bondWeight);
+            Assert.AreEqual(99, equityWeight);
         }
     }
 }
